@@ -4,11 +4,11 @@
     </div>
 </template>
 <script setup lang="ts">
-import { onMounted, render } from 'vue';
+import { onMounted } from 'vue';
 import * as THREE from "three"
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { AxesHelper } from 'three/src/helpers/AxesHelper.js';
-
+import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
 onMounted(()=>{
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(45,window.innerWidth / window.innerHeight,0.1,1000)
@@ -58,9 +58,14 @@ onMounted(()=>{
 
 
     // 
-    const spotLight =  new THREE.SpotLight(0x000000);
-    spotLight.position.set(-40,60,-10)
+    const spotLight =  new THREE.SpotLight(0xffffff);
+    spotLight.position.set(-40,60,-30)
     spotLight.castShadow = true
+    spotLight.target = plane
+    spotLight.intensity = 10000
+    spotLight.shadow.mapSize.width = 4098;
+    spotLight.shadow.mapSize.height = 4098;
+    spotLight.shadow.radius = 5;
     scene.add(spotLight)
 
 
@@ -68,16 +73,32 @@ onMounted(()=>{
     element?.append(renderer.domElement)
 
 
-    // const stats = new Stats()
-    // stats.showPanel(0)
-    // stats.dom.style.position = 'absolute'
-    // stats.dom.style.left = '0px'
-    // stats.dom.style.top = '0px'
+    const stats = new Stats()
+    stats.showPanel(0)
+    stats.dom.style.position = 'absolute'
+    stats.dom.style.left = '0px'
+    stats.dom.style.top = '0px'
 
-    // const app = document.getElementById('app')
-    // app?.append(stats.dom)
+    const app = document.getElementById('app')
+    app?.append(stats.dom)
+    let step = 0;
+    const controls = {
+        rotationSpeed:0.02,
+        bouncingSpeed:0.03
+    }
     const update =  ()=>{
-        // stats.update()
+        stats.update()
+
+        //
+        cube.rotation.x += controls.rotationSpeed
+        cube.rotation.y += controls.rotationSpeed
+        cube.rotation.z += controls.rotationSpeed
+        //
+        //
+        step += controls.bouncingSpeed
+        sphere.position.x = 20 + (10 * (Math.cos(step)))
+        sphere.position.y = 2 + (10 * Math.abs(Math.sin(step)))
+        //
         renderer.render(scene,camera)
         requestAnimationFrame(update)
     }
@@ -86,7 +107,15 @@ onMounted(()=>{
 
 
     
+    const gui = new GUI()
+    gui.add(controls,'rotationSpeed',0,0.5)
+    gui.add(controls,'bouncingSpeed',0,0.5)
 
+    window.addEventListener('resize',()=>{
+        camera.aspect = window.innerWidth / window.innerHeight
+        camera.updateProjectionMatrix()
+        renderer.setSize(window.innerWidth,window.innerHeight)
+    })
 })
 </script>
 <style scoped lang="less">
