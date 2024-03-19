@@ -9,6 +9,7 @@ import * as THREE from "three"
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { AxesHelper } from 'three/src/helpers/AxesHelper.js';
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
+import { AsciiEffect } from 'three/examples/jsm/effects/AsciiEffect.js';
 onMounted(()=>{
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(45,window.innerWidth / window.innerHeight,0.1,1000)
@@ -58,19 +59,21 @@ onMounted(()=>{
 
 
     // 
-    const spotLight =  new THREE.SpotLight(0xffffff);
-    spotLight.position.set(-40,60,-30)
-    spotLight.castShadow = true
-    spotLight.target = plane
-    spotLight.intensity = 10000
-    spotLight.shadow.mapSize.width = 4098;
-    spotLight.shadow.mapSize.height = 4098;
-    spotLight.shadow.radius = 5;
-    scene.add(spotLight)
+    const hemiLight =  new THREE.HemisphereLight(0x0000ff,0x00ff00,0.6)
+    hemiLight.position.set(0,500,0)
+    hemiLight.groundColor =  new THREE.Color(0x000000)
+    hemiLight.color = new THREE.Color(0xffffff)
+    scene.add(hemiLight)
+
+    const ambientLight = new THREE.AmbientLight(0xffffff)
+    scene.add(ambientLight)
 
 
     const element = document.getElementById('gl')
     element?.append(renderer.domElement)
+
+    //
+    // 
 
 
     const stats = new Stats()

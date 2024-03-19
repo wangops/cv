@@ -9,6 +9,7 @@ import * as THREE from "three"
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { AxesHelper } from 'three/src/helpers/AxesHelper.js';
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
+import { AsciiEffect } from 'three/examples/jsm/Addons.js';
 onMounted(()=>{
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(45,window.innerWidth / window.innerHeight,0.1,1000)
@@ -70,6 +71,7 @@ onMounted(()=>{
     const element = document.getElementById('gl')
     element?.append(renderer.domElement)
 
+    
 
     const stats = new Stats()
     stats.showPanel(0)
@@ -109,7 +111,7 @@ onMounted(()=>{
     })
 })
 
-const addCube = (planeGep:PlaneGeometry)=>{
+const addCube = (planeGep:THREE.PlaneGeometry)=>{
     const cubeSize = Math.ceil(Math.random() * 3)
     const cubeGeometry = new THREE.BoxGeometry(cubeSize,cubeSize,cubeSize)
     const cubeMaterial = new THREE.MeshLambertMaterial({color:Math.random() * 0xffffff})
