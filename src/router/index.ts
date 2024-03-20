@@ -1,12 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
 import webgl from './webgl'
 const router = createRouter({
     history: createWebHistory(),
     routes: [{
             path: '/',
             name: 'home',
-            component: Home
+            component:()=> import("@/views/Home.vue"),
+            children:[{
+                path: '/',
+                name: 'personal',
+                component:()=> import("@/views/cv/Personal.vue"),
+            }]
         },
         ...webgl
     ]

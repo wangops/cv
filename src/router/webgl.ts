@@ -13,5 +13,9 @@ export default [{
         path: '/webgl/chapter03',
         name: 'chapter03',
         component: ()=>import("@/views/webgl/Chapter03.vue")
+    },{
+        path: '/webgl/chapter04',
+        name: 'chapter04',
+        component: ()=>import("@/views/webgl/Chapter04.vue")
     }
 ]
