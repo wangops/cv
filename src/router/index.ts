@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import webgl from './webgl'
+import examples from './examples'
 const router = createRouter({
     history: createWebHistory(),
     routes: [{
@@ -12,7 +13,8 @@ const router = createRouter({
                 component:()=> import("@/views/cv/Personal.vue"),
             }]
         },
-        ...webgl
+        ...webgl,
+        ...examples
     ]
 })
 export default router
