@@ -16,3 +16,4 @@ settingStore().init()
 if(import.meta.env.MODE == "dev"){
     new VConsole()
 }
+
